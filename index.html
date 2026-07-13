@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Denis Vislobokov — Go engineer</title>
-<meta name="description" content="Denis Vislobokov builds infrastructure libraries for Go: sconf (layered configuration), sorm (Unit of Work ORM) and srog (structured logging).">
+<meta name="description" content="Denis Vislobokov builds infrastructure libraries for Go: sconf (layered configuration), sorm (Unit of Work ORM), srog (structured logging), shost (hosting framework) and protogen (protoc-free protobuf codegen).">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -199,12 +199,12 @@
   <main>
     <section class="hero">
       <h1 class="rise">Denis<br>Vislobokov<span class="accent">.</span></h1>
-      <p class="lede rise d1">I write the parts of a Go service nobody wants to think twice about — <strong>configuration, persistence and logging</strong> — so that they stay that way.</p>
+      <p class="lede rise d1">I write the parts of a Go service nobody wants to think twice about — <strong>configuration, persistence, logging, hosting and API codegen</strong> — so that they stay that way.</p>
 
       <pre class="struct rise d2" aria-label="A Go struct describing Denis"><code><span class="kw">type</span> Engineer <span class="kw">struct</span> {
     Name      <span class="kw">string</span>   <span class="tag">`default:"Denis Vislobokov"`</span>
     Language  <span class="kw">string</span>   <span class="tag">`enum:"go" default:"go"`</span>
-    Ships     []<span class="kw">string</span> <span class="tag">`name:"libraries"`</span>  <span class="cmt">// <a href="#libraries">sconf, sorm, srog</a></span>
+    Ships     []<span class="kw">string</span> <span class="tag">`name:"libraries"`</span>  <span class="cmt">// <a href="#libraries">sconf, sorm, srog, shost, protogen</a></span>
     Contact   <span class="kw">string</span>   <span class="tag">`default:"<a href="mailto:d.v.vislobokov@yandex.ru">d.v.vislobokov@yandex.ru</a>"`</span>
 }<span class="cursor" aria-hidden="true"></span></code></pre>
     </section>
@@ -239,6 +239,26 @@
           <div class="links">
             <a href="https://dvislobokov.github.io/docs/srog/">docs</a>
             <a href="https://github.com/dvislobokov/srog">source</a>
+          </div>
+        </article>
+
+        <article class="lib rise d3">
+          <h3><span>s</span>host</h3>
+          <p class="what">A hosting framework à la Microsoft.Extensions.Hosting. Ordered startup, graceful shutdown with a deadline, restart supervision and readiness gating — plus HTTP, cron and health adapters and OpenTelemetry. Standard library only.</p>
+          <code class="sig">shost.New().AddService(w).MustBuild().Run()</code>
+          <div class="links">
+            <a href="https://dvislobokov.github.io/docs/shost/">docs</a>
+            <a href="https://github.com/dvislobokov/shost">source</a>
+          </div>
+        </article>
+
+        <article class="lib rise d3">
+          <h3><span>proto</span>gen</h3>
+          <p class="what">One Go binary that turns .proto files into messages, gRPC (all streaming), a gRPC-gateway and OpenAPI v3 — with no protoc and no plugins. protovalidate constraints are reflected straight into the OpenAPI schema.</p>
+          <code class="sig">protogenall --proto_path=proto --out=gen proto</code>
+          <div class="links">
+            <a href="https://dvislobokov.github.io/docs/protogen/">docs</a>
+            <a href="https://github.com/dvislobokov/protogen">source</a>
           </div>
         </article>
       </div>
