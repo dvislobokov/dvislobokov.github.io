@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Denis Vislobokov — Go engineer</title>
+<meta name="description" content="Denis Vislobokov builds infrastructure libraries for Go: sconf (layered configuration), sorm (Unit of Work ORM) and srog (structured logging).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #f2f5f6;
+    --ink: #17232b;
+    --ink-soft: #46565f;
+    --hairline: #d3dcdf;
+    --card: #ffffff;
+    --go: #00add8;
+    --go-deep: #086f8a;
+    --editor: #101b21;
+    --editor-ink: #cfe3ea;
+    --tag: #7fd1e8;
+    --str: #a8d08d;
+    --kw: #6fb3c9;
+    --comment: #5b7280;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0d151a;
+      --ink: #e4edf1;
+      --ink-soft: #93a6ae;
+      --hairline: #24343c;
+      --card: #131f26;
+      --go-deep: #4cc3e0;
+      --editor: #0a1114;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--go); color: #fff; }
+
+  .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  a { color: var(--go-deep); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  a:focus-visible, .btn:focus-visible {
+    outline: 2px solid var(--go);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--hairline);
+    font-family: "IBM Plex Mono", monospace; font-size: .85rem;
+  }
+  header .path { color: var(--ink-soft); }
+  header nav a { margin-left: 1.4rem; color: var(--ink); }
+  header nav a:hover { color: var(--go-deep); }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 4.5rem 0 3.5rem; }
+  .hero h1 {
+    font-family: "Archivo", sans-serif;
+    font-variation-settings: "wdth" 118, "wght" 780;
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    line-height: .98;
+    letter-spacing: -.015em;
+    text-transform: uppercase;
+    max-width: 14ch;
+  }
+  .hero h1 .accent { color: var(--go); }
+  .hero .lede {
+    margin-top: 1.4rem;
+    max-width: 42ch;
+    font-size: 1.12rem;
+    color: var(--ink-soft);
+  }
+  .hero .lede strong { color: var(--ink); font-weight: 600; }
+
+  /* the signature: an annotated Go struct */
+  .struct {
+    margin-top: 2.6rem;
+    background: var(--editor);
+    color: var(--editor-ink);
+    border-radius: 10px;
+    padding: 1.5rem 1.7rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: clamp(.72rem, 2vw, .92rem);
+    line-height: 1.75;
+    overflow-x: auto;
+    box-shadow: 0 18px 45px -28px rgba(8, 40, 54, .55);
+  }
+  .struct .kw   { color: var(--kw); }
+  .struct .tag  { color: var(--tag); }
+  .struct .str  { color: var(--str); }
+  .struct .cmt  { color: var(--comment); font-style: italic; }
+  .struct a     { color: var(--str); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(168, 208, 141, .4); }
+  .struct a:hover { text-decoration-color: var(--str); }
+  .cursor {
+    display: inline-block; width: .55em; height: 1.15em;
+    background: var(--go); vertical-align: text-bottom;
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* staggered load */
+  .rise { opacity: 0; transform: translateY(10px); animation: rise .6s ease-out forwards; }
+  .rise.d1 { animation-delay: .08s; }
+  .rise.d2 { animation-delay: .18s; }
+  .rise.d3 { animation-delay: .3s; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .rise { opacity: 1; transform: none; animation: none; }
+    .cursor { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  /* ---------- libraries ---------- */
+  .libs { padding: 1.5rem 0 4rem; }
+  .libs > h2 {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: .8rem; font-weight: 500;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 1.4rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 1.1rem;
+  }
+  .lib {
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 1.5rem 1.5rem 1.3rem;
+    display: flex; flex-direction: column; gap: .8rem;
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .lib:hover { border-color: var(--go); transform: translateY(-2px); }
+  @media (prefers-reduced-motion: reduce) { .lib:hover { transform: none; } }
+  .lib h3 {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 1.25rem; font-weight: 500;
+  }
+  .lib h3 span { color: var(--go); }
+  .lib .what { color: var(--ink-soft); font-size: .95rem; flex-grow: 1; }
+  .lib code.sig {
+    display: block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: .78rem;
+    color: var(--go-deep);
+    background: color-mix(in srgb, var(--go) 8%, transparent);
+    border-left: 2px solid var(--go);
+    padding: .55rem .8rem;
+    border-radius: 0 6px 6px 0;
+    overflow-x: auto; white-space: nowrap;
+  }
+  .lib .links {
+    display: flex; gap: 1.2rem;
+    font-family: "IBM Plex Mono", monospace; font-size: .82rem;
+    padding-top: .2rem;
+  }
+  .lib .links a::after { content: " ↗"; color: var(--ink-soft); }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--hairline);
+    padding: 2rem 0 2.6rem;
+    display: flex; flex-wrap: wrap; gap: .6rem 2rem;
+    justify-content: space-between; align-items: baseline;
+    font-family: "IBM Plex Mono", monospace; font-size: .84rem;
+    color: var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <span class="path">~/dvislobokov</span>
+    <nav>
+      <a href="#libraries">libraries</a>
+      <a href="https://github.com/dvislobokov">github</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1 class="rise">Denis<br>Vislobokov<span class="accent">.</span></h1>
+      <p class="lede rise d1">I write the parts of a Go service nobody wants to think twice about — <strong>configuration, persistence and logging</strong> — so that they stay that way.</p>
+
+      <pre class="struct rise d2" aria-label="A Go struct describing Denis"><code><span class="kw">type</span> Engineer <span class="kw">struct</span> {
+    Name      <span class="kw">string</span>   <span class="tag">`default:"Denis Vislobokov"`</span>
+    Language  <span class="kw">string</span>   <span class="tag">`enum:"go" default:"go"`</span>
+    Ships     []<span class="kw">string</span> <span class="tag">`name:"libraries"`</span>  <span class="cmt">// <a href="#libraries">sconf, sorm, srog</a></span>
+    Contact   <span class="kw">string</span>   <span class="tag">`default:"<a href="mailto:techtrashh@gmail.com">techtrashh@gmail.com</a>"`</span>
+}<span class="cursor" aria-hidden="true"></span></code></pre>
+    </section>
+
+    <section class="libs" id="libraries">
+      <h2>go get github.com/dvislobokov/…</h2>
+      <div class="grid">
+        <article class="lib rise d1">
+          <h3><span>s</span>conf</h3>
+          <p class="what">Layered configuration, modeled after ASP.NET Core. JSON, YAML, TOML, env vars, CLI flags and Vault secrets merge per key into one typed struct — including arrays of objects built from environment variables.</p>
+          <code class="sig">cfg, err := sconf.Load[Config](b, os.Args[1:])</code>
+          <div class="links">
+            <a href="https://dvislobokov.github.io/docs/sconf/">docs</a>
+            <a href="https://github.com/dvislobokov/sconf">source</a>
+          </div>
+        </article>
+
+        <article class="lib rise d2">
+          <h3><span>s</span>orm</h3>
+          <p class="what">The Go ORM with a real Unit of Work. Track entities, mutate plain structs, call SaveChanges once — diffs, write ordering and optimistic concurrency are handled for you. PostgreSQL, MySQL, SQLite.</p>
+          <code class="sig">err := session.SaveChanges(ctx)</code>
+          <div class="links">
+            <a href="https://dvislobokov.github.io/docs/sorm/">docs</a>
+            <a href="https://github.com/dvislobokov/sorm">source</a>
+          </div>
+        </article>
+
+        <article class="lib rise d3">
+          <h3><span>s</span>rog</h3>
+          <p class="what">Serilog-style message templates for Go, on top of zerolog. Write the message once, get typed structured fields for free — with zero allocations on the hot path, rotation, ECS and OpenTelemetry output.</p>
+          <code class="sig">log.Information("order {Id} shipped", id)</code>
+          <div class="links">
+            <a href="https://dvislobokov.github.io/docs/srog/">docs</a>
+            <a href="https://github.com/dvislobokov/srog">source</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span id="y">2026</span> Denis Vislobokov</span>
+    <span><a href="mailto:techtrashh@gmail.com">techtrashh@gmail.com</a> · <a href="https://github.com/dvislobokov">github.com/dvislobokov</a></span>
+  </footer>
+</div>
+
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>
