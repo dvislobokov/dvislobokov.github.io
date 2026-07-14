@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Denis Vislobokov — Go engineer</title>
-<meta name="description" content="Denis Vislobokov builds infrastructure libraries for Go: sconf (layered configuration), sorm (Unit of Work ORM), srog (structured logging), shost (hosting framework) and protogen (protoc-free protobuf codegen).">
+<meta name="description" content="Denis Vislobokov builds infrastructure libraries for Go: sconf (layered configuration), sorm (Unit of Work ORM), srog (structured logging), shost (hosting framework), smsg (typed messaging bus) and protogen (protoc-free protobuf codegen).">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -199,12 +199,12 @@
   <main>
     <section class="hero">
       <h1 class="rise">Denis<br>Vislobokov<span class="accent">.</span></h1>
-      <p class="lede rise d1">I write the parts of a Go service nobody wants to think twice about — <strong>configuration, persistence, logging, hosting and API codegen</strong> — so that they stay that way.</p>
+      <p class="lede rise d1">I write the parts of a Go service nobody wants to think twice about — <strong>configuration, persistence, logging, hosting, messaging and API codegen</strong> — so that they stay that way.</p>
 
       <pre class="struct rise d2" aria-label="A Go struct describing Denis"><code><span class="kw">type</span> Engineer <span class="kw">struct</span> {
     Name      <span class="kw">string</span>   <span class="tag">`default:"Denis Vislobokov"`</span>
     Language  <span class="kw">string</span>   <span class="tag">`enum:"go" default:"go"`</span>
-    Ships     []<span class="kw">string</span> <span class="tag">`name:"libraries"`</span>  <span class="cmt">// <a href="#libraries">sconf, sorm, srog, shost, protogen</a></span>
+    Ships     []<span class="kw">string</span> <span class="tag">`name:"libraries"`</span>  <span class="cmt">// <a href="#libraries">sconf, sorm, srog, shost, smsg, protogen</a></span>
     Contact   <span class="kw">string</span>   <span class="tag">`default:"<a href="mailto:d.v.vislobokov@yandex.ru">d.v.vislobokov@yandex.ru</a>"`</span>
 }<span class="cursor" aria-hidden="true"></span></code></pre>
     </section>
@@ -249,6 +249,16 @@
           <div class="links">
             <a href="https://dvislobokov.github.io/docs/shost/">docs</a>
             <a href="https://github.com/dvislobokov/shost">source</a>
+          </div>
+        </article>
+
+        <article class="lib rise d3">
+          <h3><span>s</span>msg</h3>
+          <p class="what">A typed messaging bus, MassTransit-style. Generic consumers, envelopes with ids and headers, in-process retry with backoff and dead-lettering — over RabbitMQ, Kafka or fully in-memory in tests. Stdlib-only core.</p>
+          <code class="sig">smsg.For[OrderCreated](&amp;BillingConsumer{})</code>
+          <div class="links">
+            <a href="https://dvislobokov.github.io/docs/smsg/">docs</a>
+            <a href="https://github.com/dvislobokov/smsg">source</a>
           </div>
         </article>
 
